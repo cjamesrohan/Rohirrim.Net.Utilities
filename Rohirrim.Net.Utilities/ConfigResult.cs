@@ -1,9 +1,19 @@
+using System;
 using Microsoft.Extensions.Configuration;
 
 namespace Rohirrim.Net.Utilities;
 
-public sealed class ConfigResult<T>
+public readonly struct ConfigResult<T>
 {
-    public IConfigurationSection Config { get; set; } = null!;
-    public T Options { get; set; } = default!;
+    public readonly IConfigurationSection Config;
+    public readonly T Options;
+    
+    [Obsolete("Default constructor disabled.", true)]
+    public ConfigResult() => throw new InvalidOperationException("Default constructor disabled.");
+
+    public ConfigResult(IConfigurationSection configSection, T options)
+    {
+        Config = configSection;
+        Options = options;
+    }
 }

@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Rohirrim.Net.Utilities;
 
-[ExcludeFromCodeCoverage]
 public static class OptionsExtensions
 {
     public static ConfigResult<T> ConfigureAndGet<T>(this IServiceCollection services, IConfiguration config) where T : class
@@ -20,10 +18,6 @@ public static class OptionsExtensions
         services.Configure<T>(configSection);
         var options = configSection.Get<T>();
         options.Validate();
-        return new ConfigResult<T>
-        {
-            Config = configSection,
-            Options = options
-        };
+        return new ConfigResult<T>(configSection, options);
     }
 }

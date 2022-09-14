@@ -7,6 +7,11 @@ namespace Rohirrim.Net.Utilities;
 
 public static class ResultExtensions
 {
+    public static ResultAssertions<T> Should<T>(this Result<T> instance)
+    {
+        return new ResultAssertions<T>(instance);
+    }
+    
     /// <summary>
     /// Returns an IActionResult with status code: 200 OK
     /// </summary>
@@ -17,7 +22,7 @@ public static class ResultExtensions
     /// <returns></returns>
     public static IActionResult ToOk<TResult>(this Result<TResult> result, ILogger? logger = null, [CallerMemberName] string? methodName = null)
     {
-        if (!result.IsSuccess) return Fail(result.Error!, logger, methodName);
+        if (!result.IsSuccess) return Fail(result.Error, logger, methodName);
         logger?.LogInformation("Request succeeded for {@MethodName}, {@Response}", methodName, result.Value);
         return new OkObjectResult(result.Value);
     }
@@ -32,7 +37,7 @@ public static class ResultExtensions
     /// <returns></returns>
     public static IActionResult ToCreated<TResult>(this Result<TResult> result, ILogger? logger = null, [CallerMemberName] string? methodName = null)
     {
-        if (!result.IsSuccess) return Fail(result.Error!, logger, methodName);
+        if (!result.IsSuccess) return Fail(result.Error, logger, methodName);
         logger?.LogInformation("Request succeeded for {@MethodName}, {@Response}", methodName, result.Value);
         return new ObjectResult(result.Value) { StatusCode = (int)HttpStatusCode.Created };
     }
@@ -47,31 +52,14 @@ public static class ResultExtensions
     /// <returns></returns>
     public static IActionResult ToNoContent<TResult>(this Result<TResult> result, ILogger? logger = null, [CallerMemberName] string? methodName = null)
     {
-        if (!result.IsSuccess) return Fail(result.Error!, logger, methodName);
+        if (!result.IsSuccess) return Fail(result.Error, logger, methodName);
         logger?.LogInformation("Request succeeded for {@MethodName}", methodName);
         return new NoContentResult();
     }
         
-    private static IActionResult Fail(ApiError apiError, ILogger? logger = null, string? methodName = null)
+    private static IActionResult Fail(ApiError? apiError, ILogger? logger = null, string? methodName = null)
     {
         logger?.LogWarning("Request failed for {@MethodName}, {@Response}", methodName, apiError);
-        return new ObjectResult(apiError) { StatusCode = apiError.HttpStatusCode };
+        return new ObjectResult(apiError) { StatusCode = apiError?.HttpStatusCode };
     }
-}
-
-public sealed class ApiError
-{
-    public ApiError(HttpStatusCode statusCode, string? message = null)
-    {
-        HttpStatusCode = (int)statusCode;
-        ErrorId = statusCode.ToString().ToUpper();
-        Message = message;
-    }
-    
-    public int HttpStatusCode { get; }
-    public string ErrorId { get; }
-
-    public string? Message { get; }
-
-    public static ApiError Create(HttpStatusCode statusCode, string? message = null) => new(statusCode, message);
 }

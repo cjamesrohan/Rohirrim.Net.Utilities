@@ -89,6 +89,6 @@ public readonly struct Result<T>
     public static Result<T> ErrorResult(HttpStatusCode statusCode, string? message = null) =>
         statusCode < HttpStatusCode.BadRequest 
             ? throw new ArgumentException("Cannot return an ErrorResult with a success-level status code", nameof(statusCode))
-            : new Result<T>(ApiError.Create(statusCode, message));
+            : new Result<T>(new ApiError(statusCode, message));
     
 }
