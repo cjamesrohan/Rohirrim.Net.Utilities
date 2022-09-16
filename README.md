@@ -1,3 +1,3 @@
 # Rohirrim.Net.Utilities
 
-![example workflow](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+![example workflow](https://github.com/cjamesrohan/Rohirrim.Net.Utilities/actions/workflows/main.yml/badge.svg)
