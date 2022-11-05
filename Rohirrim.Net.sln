@@ -8,6 +8,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{DA8270C5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rohirrim.Net.Utilities.UnitTests", "tests\Rohirrim.Net.Utilities.UnitTests\Rohirrim.Net.Utilities.UnitTests.csproj", "{2D9DB246-254E-4DC9-A9EB-C1CED7D5EBC7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rohirrim.Net.Utilities.Testing", "src\Rohirrim.Net.Utilities.Testing\Rohirrim.Net.Utilities.Testing.csproj", "{B7720AAB-7507-4231-BEA5-1796B3C185F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,9 +24,14 @@ Global
 		{2D9DB246-254E-4DC9-A9EB-C1CED7D5EBC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D9DB246-254E-4DC9-A9EB-C1CED7D5EBC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D9DB246-254E-4DC9-A9EB-C1CED7D5EBC7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7720AAB-7507-4231-BEA5-1796B3C185F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7720AAB-7507-4231-BEA5-1796B3C185F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7720AAB-7507-4231-BEA5-1796B3C185F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7720AAB-7507-4231-BEA5-1796B3C185F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ABB8E22C-8DE6-4694-A559-0BB5AC4568C9} = {8D5254E5-11EF-47D9-8C57-357F15369BF8}
 		{2D9DB246-254E-4DC9-A9EB-C1CED7D5EBC7} = {DA8270C5-DA4E-4EE6-995D-E30B9B16B14B}
+		{B7720AAB-7507-4231-BEA5-1796B3C185F5} = {8D5254E5-11EF-47D9-8C57-357F15369BF8}
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Rohirrim.Net.Utilities;
+namespace Rohirrim.Net.Utilities.OptionsValidation;
 
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class UrlFormatAttribute : ValidationAttribute

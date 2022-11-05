@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Extensions.Configuration;
 
-namespace Rohirrim.Net.Utilities;
+namespace Rohirrim.Net.Utilities.OptionsValidation;
 
 public readonly struct ConfigResult<T>
 {

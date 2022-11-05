@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace Rohirrim.Net.Utilities;
+namespace Rohirrim.Net.Utilities.OptionsValidation;
 
 [AttributeUsage(AttributeTargets.Property)]
 public sealed class ValidateObjectAttribute : ValidationAttribute
