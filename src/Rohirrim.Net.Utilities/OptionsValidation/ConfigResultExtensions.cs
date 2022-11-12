@@ -7,21 +7,52 @@ namespace Rohirrim.Net.Utilities.OptionsValidation;
 
 public static class ConfigResultExtensions
 {
+    private static readonly Dictionary<string, List<ValidationResult>> Errors = new();
+    
     public static ConfigResult<T> Validate<T>(this ConfigResult<T> configResult) where T : class
     {
         if (!configResult.Config.Exists()) throw new ValidationException($"Missing config section for {configResult.Config.Key}");
         var isValid = configResult.TryValidate(out var errorMessages);
-        if (!isValid) throw new ValidationException($"The {typeof(T).Name} object is invalid: {string.Join(" ", errorMessages)}");
+        if (!isValid) throw new ValidationException(string.Join(' ', errorMessages));
         return configResult;
     }
 
     public static bool TryValidate<T>(this ConfigResult<T> configResult, out List<string> errorMessages) where T : class
     {
-        var options = configResult.Options;
-        var validationContext = new ValidationContext(options);
+        configResult.Options.TryValidate();
+        errorMessages = Errors
+            .Select(x => $"The {x.Key} object is invalid: {string.Join(' ', x.Value)}")
+            .ToList();
+        return !errorMessages.Any();
+    }
+
+    private static void TryValidate(this object? instance, string? rootTypeName = null)
+    {
+        if (instance is null) return;
+        var type = instance.GetType();
+        var typeName = type.Name;
+        if (!string.IsNullOrWhiteSpace(rootTypeName))
+        {
+            typeName = $"{rootTypeName}.{typeName}";
+        }
+        var validationContext = new ValidationContext(instance);
         var validationResults = new List<ValidationResult>();
-        var isValid = Validator.TryValidateObject(options, validationContext, validationResults, true);
-        errorMessages = validationResults.Where(x => !string.IsNullOrWhiteSpace(x.ErrorMessage)).Select(x => x.ErrorMessage!).ToList();
-        return isValid;
+        Validator.TryValidateObject(instance, validationContext, validationResults, true);
+        if (validationResults.Any())
+        {
+            if (!Errors.ContainsKey(typeName))
+            {
+                Errors.Add(typeName, new List<ValidationResult>());
+            }
+            Errors[typeName].AddRange(validationResults);   
+        }
+        foreach (var propertyInfo in type.GetProperties())
+        {
+            if (propertyInfo.PropertyType.IsClass)
+            {
+                var value = propertyInfo.GetValue(instance);
+                value.TryValidate(typeName);
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ public static class OptionsExtensions
 
     public static IServiceCollection AddOptionsValidation(this IServiceCollection services, Action<OptionsValidationConfig>? config = null)
     {
+        services.AddOptions();
         if (config is not null)
         {
             config(OptionsValidationConfig);
