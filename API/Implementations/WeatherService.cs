@@ -6,26 +6,32 @@ namespace API.Implementations;
 
 public class WeatherService : IWeatherService
 {
+    private readonly ILogger<WeatherService> _logger;
     private readonly TestOptions _testOptions;
 
     private static readonly string[] Summaries = {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-    public WeatherService(IOptions<TestOptions> testOptions)
+    public WeatherService(ILogger<WeatherService> logger, IOptions<TestOptions> testOptions)
     {
+        _logger = logger;
         _testOptions = testOptions.Value;
     }
     
     public async Task<WeatherForecastResponse> GetForecastAsync()
     {
+        _logger.BeginScope(new Dictionary<string, string> { { "SomeId", "SomeValue" } });
+        
         await Task.Delay(100);
-        var count = Random.Shared.Next(0, _testOptions.SomeInt);
+        var random = new Random();
+        var count = random.Next(1, _testOptions.SomeInt);
+        _logger.LogInformation("Getting weather forecast, {@Count}", 5);
         var weatherForecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            TemperatureC = random.Next(-20, 55),
+            Summary = Summaries[random.Next(Summaries.Length)]
         }).Take(count).ToList();
         if (!weatherForecasts.Any())
         {
