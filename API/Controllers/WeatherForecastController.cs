@@ -20,7 +20,6 @@ public class WeatherForecastController : ControllerBase
 
     [HttpGet(Name = "GetWeatherForecast")]
     [ProducesResponseType(typeof(WeatherForecastResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get()
     {
         try
@@ -30,7 +29,7 @@ public class WeatherForecastController : ControllerBase
         }
         catch (DataNotFoundException ex)
         {
-            return NotFound(ApiError.Create(ex.Message));
+            return NotFound(ex.Message);
         }
     }
 }
