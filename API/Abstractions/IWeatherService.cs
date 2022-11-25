@@ -1,8 +1,9 @@
 using ApiModels;
+using Rohirrim.Net.Utilities.Results;
 
 namespace API.Abstractions;
 
 public interface IWeatherService
 {
-    public Task<WeatherForecastResponse> GetForecastAsync();
+    public Task<Result<WeatherForecastResponse>> GetForecastAsync(CancellationToken ct = default);
 }

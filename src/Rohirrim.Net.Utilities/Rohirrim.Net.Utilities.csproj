@@ -6,7 +6,7 @@
         <Nullable>enable</Nullable>
         <WarningsAsErrors>nullable</WarningsAsErrors>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>1.0.0-alpha.5</Version>
+        <Version>1.0.0-alpha.6</Version>
         <RepositoryType>GitHub</RepositoryType>
         <RepositoryUrl>https://github.com/cjamesrohan/Rohirrim.Net.Utilities</RepositoryUrl>
         <Authors>Coty Rohan</Authors>

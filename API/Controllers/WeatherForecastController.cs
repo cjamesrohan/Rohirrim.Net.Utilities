@@ -2,7 +2,7 @@ using API.Abstractions;
 using API.Implementations;
 using ApiModels;
 using Microsoft.AspNetCore.Mvc;
-using Rohirrim.Net.Utilities;
+using Rohirrim.Net.Utilities.Results;
 
 namespace API.Controllers;
 
@@ -20,16 +20,11 @@ public class WeatherForecastController : ControllerBase
 
     [HttpGet(Name = "GetWeatherForecast")]
     [ProducesResponseType(typeof(WeatherForecastResponse), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get()
+    public async Task<IActionResult> Get(CancellationToken ct = default)
     {
-        try
-        {
-            var response = await _weatherService.GetForecastAsync();
-            return Ok(response);
-        }
-        catch (DataNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        return await _weatherService.GetForecastAsync(ct)
+            .OnSuccess(Ok)
+            .HandleException<DataNotFoundException>(ex => NotFound(ex.Message))
+            .ReturnAsync();
     }
 }

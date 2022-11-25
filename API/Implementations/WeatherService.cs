@@ -1,6 +1,7 @@
 using API.Abstractions;
 using ApiModels;
 using Microsoft.Extensions.Options;
+using Rohirrim.Net.Utilities.Results;
 
 namespace API.Implementations;
 
@@ -19,7 +20,7 @@ public class WeatherService : IWeatherService
         _testOptions = testOptions.Value;
     }
     
-    public async Task<WeatherForecastResponse> GetForecastAsync()
+    public async Task<Result<WeatherForecastResponse>> GetForecastAsync(CancellationToken ct = default)
     {
         _logger.BeginScope(new Dictionary<string, string> { { "SomeId", "SomeValue" } });
         
@@ -35,7 +36,7 @@ public class WeatherService : IWeatherService
         }).Take(count).ToList();
         if (!weatherForecasts.Any())
         {
-            throw new DataNotFoundException("The requested data was not found");
+            return new DataNotFoundException("The requested data was not found");
         }
         return new WeatherForecastResponse(weatherForecasts);
     }
